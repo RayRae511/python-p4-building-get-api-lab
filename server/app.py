@@ -20,19 +20,24 @@ def index():
 
 @app.route('/bakeries')
 def bakeries():
-    return ''
+    bakeries = Bakery.query.all()
+    return jsonify(Bakery.serialize_list(bakeries))
 
 @app.route('/bakeries/<int:id>')
 def bakery_by_id(id):
-    return ''
+    if bakery:
+        return jsonify(Bakery.serialize())
+    return jsonify({'error': 'Bakery not found'}), 404
 
 @app.route('/baked_goods/by_price')
 def baked_goods_by_price():
-    return ''
+    baked_goods = BakedGood.query.order_by(BakedGood.price.desc()).all()
+    return jsonify(BakedGood.serialize_list(baked_goods))
 
 @app.route('/baked_goods/most_expensive')
 def most_expensive_baked_good():
-    return ''
+    baked_good = BakedGood.query.order_by(BakedGood.price.desc()).all()
+    return jsonify(BakedGood.serialize(baked_good[0]))
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
